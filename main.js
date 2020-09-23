@@ -88,20 +88,54 @@ let url = 'https://api.publicapis.org/entries'
 fetch(url)
     .then((data) => data.json())
     .then((newData) => {
-        newData.entries.filter(({ Category }) => Category === 'Animals')
+
+        // created an array to organize all returned categories
+        let categoryArray = []
+
+        newData.entries.forEach(({ Category }) => {
+            categoryArray.push(Category)
+        })
+
+        // to create an array of values that only appear once each time, in array. 
+        //  NO DUPLICATES
+        const distinctCategories = [... new Set(categoryArray)]
+
+        // function that chooses random items in an array
+        function random_item(items) {
+            return items[Math.floor(Math.random() * items.length)];
+        }
+
+        // save random choice in loop to give to filtered data
+        const randomCategoryChoice = random_item(distinctCategories)
+
+        
+        newData.entries.filter(({ Category }) => Category === randomCategoryChoice)
             .map(({ API, Description, Link, Category }) => {
 
                 console.log(
                     `
-                    API: ${API}
-                    Description: ${Description}
-                    Link: ${Link}
-                    Category: ${Category}
-                    `
+                        API: ${API}
+                        Description: ${Description}
+                        Link: ${Link}
+                        Category: ${Category}
+                        `
                 )
             })
 
     })
+
+
+
+
+// function random_item(items)
+// {
+
+// return items[Math.floor(Math.random()*items.length)];
+
+// }
+
+// var items = ['254', '45', '212', '365', '2543'];
+// console.log(random_item(items));
 
 
 
